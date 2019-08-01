@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contentResource exportedWithPermissions="false" dataFile="version.txt">
+    <folder>/reports/permits</folder>
+    <name>version.txt</name>
+    <version>0</version>
+    <label>version.txt</label>
+    <description></description>
+    <creationDate>2016-04-08T19:08:16.000+03:00</creationDate>
+    <updateDate>2016-04-08T19:08:16.000+03:00</updateDate>
+    <fileType>contentResource</fileType>
+</contentResource>

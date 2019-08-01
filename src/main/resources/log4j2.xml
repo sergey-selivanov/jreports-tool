@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+             <PatternLayout pattern="%5p [%t] (%F:%L) - %m%n" />
+        </Console>
+
+<!-- ${sys:java.io.tmpdir} -->
+        <RollingFile name="Rolling"
+            fileName="${sys:user.home}/jreports-tool.log"
+            filePattern="$${sys:user.home}/jreports-tool-%d{yyyyMMMdd-HH-mm}.%i.log">
+
+            <PatternLayout pattern="%d %5p [%t] (%F:%L) - %m%n" />
+
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/> <!-- not working for onstartup? -->
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+    <!-- TRACE, DEBUG, INFO, WARN, ERROR, ALL or OFF -->
+        <Root level="debug"><!-- Note: set in the code actually -->
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="Rolling" />
+        </Root>
+
+    </Loggers>
+</Configuration>

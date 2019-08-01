@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export>
+    <property name="pathProcessorId" value="zip" />
+    <property name="rootTenantId" value="organizations" />
+    <property name="jsVersion" value="6.2.1 CE" />
+    <module id="repositoryResources">
+        <folder>/reports/permits2</folder>
+    </module>
+</export>

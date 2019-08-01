@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reportUnit exportedWithPermissions="false">
+    <folder>/reports/permits2/forms</folder>
+    <name>artp</name>
+    <version>0</version>
+    <label>artp</label>
+    <description></description>
+    <creationDate>2016-10-13T13:53:07.000Z</creationDate>
+    <updateDate>2016-10-13T15:36:20.000Z</updateDate>
+    <mainReport>
+        <localResource
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            exportedWithPermissions="false" dataFile="main_jrxml.data" xsi:type="fileResource">
+            <folder>/reports/permits2/forms/artp_files</folder>
+            <name>main_jrxml</name>
+            <version>0</version>
+            <label>Main jrxml</label>
+            <creationDate>2016-10-13T13:53:07.000Z</creationDate>
+            <updateDate>2016-10-13T15:36:20.000Z</updateDate>
+            <fileType>jrxml</fileType>
+        </localResource>
+    </mainReport>
+    <dataSource>
+        <uri>/reports/permits2/permits_ds</uri>
+    </dataSource>
+<!--
+    <inputControl>
+    </inputControl>
+    <resource>
+    </resource>
+ -->
+ <insertionAnchor>
+ <!--
+    inputControl and resource elements will be inserted before this element, and then it will be deleted
+-->
+</insertionAnchor>
+    <alwaysPromptControls>true</alwaysPromptControls>
+    <controlsLayout>1</controlsLayout>
+</reportUnit>

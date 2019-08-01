@@ -1,0 +1,11 @@
+#
+#    Filename and dirname patterns to exclude from reports
+#    See java.util.regex.Pattern
+#
+
+\..*
+other_.*
+po_.*
+aaa_fonttest.*
+misc
+doc

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jdbcDataSource exportedWithPermissions="false">
+    <folder>/reports/permits2</folder>
+    <name>permits_ds</name>
+    <version>0</version>
+    <label>permits_ds</label>
+    <creationDate>2016-10-13T13:53:07.000Z</creationDate>
+    <updateDate>2016-09-27T13:47:26.000Z</updateDate>
+    <driver>org.mariadb.jdbc.Driver</driver>
+    <connectionUrl>jdbc:mysql://localhost:3306/permits?tinyInt1isBit=false</connectionUrl>
+    <connectionUser>permits</connectionUser>
+    <connectionPassword>ENC&lt;D559F62A26512D673E0772052D4CF1D4&gt;</connectionPassword>
+    <timezone></timezone>
+</jdbcDataSource>

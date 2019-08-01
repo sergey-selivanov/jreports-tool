@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="DM_DEFAULT_ENCODING" />
+    </Match>
+
+    <Match>
+        <Class name="sssii.jreports.ImportGenerator" />
+        <Method name="process" />
+        <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE, OBL_UNSATISFIED_OBLIGATION" />
+    </Match>
+
+    <Match>
+        <Class name="sssii.jreports.ImportGenerator" />
+        <Method name="processSourceDirectory" />
+        <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE, OBL_UNSATISFIED_OBLIGATION, RV_RETURN_VALUE_IGNORED_BAD_PRACTICE, WMI_WRONG_MAP_ITERATOR" />
+    </Match>
+
+    <Match>
+        <Class name="sssii.jreports.ImportGenerator" />
+        <Method name="processReportFile" />
+        <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
+    </Match>
+
+    <Match>
+        <Class name="sssii.jreports.ImportGenerator" />
+        <Method name="processResourceFile" />
+        <Bug pattern="OBL_UNSATISFIED_OBLIGATION" />
+    </Match>
+
+    <Match>
+        <Class name="sssii.jreports.ImportGenerator" />
+        <Method name="zipDir" />
+        <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" />
+    </Match>
+
+    <Match>
+        <Class name="sssii.jreports.ImportGenerator" />
+        <Method name="deleteDir" />
+        <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" />
+    </Match>
+
+</FindBugsFilter>

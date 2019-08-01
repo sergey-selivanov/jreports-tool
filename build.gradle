@@ -1,0 +1,174 @@
+/**
+ * To make release and increase version, set stage final:
+ *
+ * gradle release -Prelease.scope=patch -Prelease.stage=final
+ * gradle release -Prelease.scope=minor -Prelease.stage=final
+ * gradle release -Prelease.scope=major -Prelease.stage=final
+ *
+ * The change scope can be either MAJOR, MINOR, or PATCH
+ * The stage of the change corresponds to the development stage (such as dev, milestone, rc, final)
+ */
+
+buildscript {
+    repositories {
+/*        maven {
+            url "${artifactory_contextUrl}/libs-release"
+            credentials {
+                username = "${artifactory_user}"
+                password = "${artifactory_password}"
+            }
+        }*/
+        //mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.ajoberstar:gradle-git:1.7.2'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+    }
+}
+
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+apply plugin: 'org.ajoberstar.release-opinion'
+apply plugin: 'com.github.ben-manes.versions'
+
+
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.ajoberstar.grgit.*
+import org.ajoberstar.gradle.git.release.opinion.Strategies
+
+mainClassName = 'sssii.jreports.JReportsTool'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext.repo = Grgit.open(project.file('.'))
+
+repositories {
+/*    maven {
+        url "${artifactory_contextUrl}/libs-release"
+        credentials {
+            username = "${artifactory_user}"
+            password = "${artifactory_password}"
+        }
+    }*/
+    //mavenCentral()
+    jcenter()
+}
+
+
+dependencies {
+
+    compile 'org.glassfish.jersey.core:jersey-client:2.27'
+    compile 'org.glassfish.jersey.inject:jersey-hk2:2.27'
+
+    compile 'com.thoughtworks.xstream:xstream:1.4.10'
+    compile 'commons-cli:commons-cli:1.4'
+
+    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.11.0'
+    compile 'org.apache.logging.log4j:log4j-core:2.11.0'
+
+    testCompile 'junit:junit:4.12'
+}
+
+dependencyUpdates.resolutionStrategy = {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'b'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
+}
+
+
+def val = System.getenv('BUILD_NUMBER')
+def bn = (val == null ? 'nohudson' : 'b' + val)
+def bnn = (val == null ? '0' : val)
+
+val = System.getenv('BUILD_ID')
+def bid = (val == null ? 'undefined' : val)
+
+val = System.getenv('USER');    // linux
+if(val == null){
+    val = System.getenv('USERNAME');    // linux under glassfish, windows
+}
+def builduser = (val == null ? 'undefined' : val)
+
+def buildhost = InetAddress.localHost.hostName
+
+
+release {
+    //grgit = Grgit.open(project.file('..'))
+    grgit = repo
+}
+
+tasks.release.dependsOn 'build'
+
+
+processResources{
+
+    filter(ReplaceTokens,
+        tokens:[
+            'git.commit': repo.head().abbreviatedId,
+            'git.date': repo.head().date.toString(),
+            'build.date': new java.util.Date().toString(),
+            'version': project.version.toString(),
+            'hudson.build.number': bn,
+            'hudson.build.id': bid,
+            'build.host': builduser + '@' + buildhost
+            ])
+}
+
+checkstyle {
+    // TODO: why it worked with v1.0.7? gradle prior to 4.1?
+    toolVersion = '5.9'    // TODO in gradle 3.5 updated to 6.19, seems new checkstyle.xml needed; 4.1 seems still says 6.19
+    ignoreFailures = true
+    sourceSets = [ project.sourceSets.main ]
+}
+
+findbugs {
+    ignoreFailures = true
+    sourceSets = [ project.sourceSets.main ]
+    excludeFilter = file("$projectDir/config/findbugs/excludeFilter.xml")
+}
+
+test {
+    // do not perform unit tests
+    exclude 'sssii/jreports/**'
+}
+
+/*
+task copyConfigs(type: Copy) {
+
+    from(sourceSets.main.resources){
+        include 'options.properties'
+    }
+
+    into("$buildDir/config")
+}
+
+applicationDistribution.from(copyConfigs) {
+    into "config"
+}
+*/
+
+/*
+startScripts {
+    //classpath += files('config')    // appends
+    classpath = files('config').plus(classpath)
+
+    // http://forums.gradle.org/gradle/topics/classpath_in_application_plugin_is_bilding_always_relative_to_app_home_lib_directory
+    doLast {
+        def windowsScriptFile = file getWindowsScript()
+        def unixScriptFile    = file getUnixScript()
+        windowsScriptFile.text = windowsScriptFile.text.replace('%APP_HOME%\\lib\\config', '%APP_HOME%\\config')
+        unixScriptFile.text    = unixScriptFile.text.replace('$APP_HOME/lib/config', '$APP_HOME/config')
+    }
+}
+*/

@@ -1,0 +1,29 @@
+    <inputControl>
+        <localResource
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            exportedWithPermissions="false" xsi:type="inputControl">
+            <folder>/reports/permits2/forms/artp_files</folder>
+            <name>end_date</name>
+            <version>0</version>
+            <label>end_date</label>
+            <creationDate>2016-10-13T13:53:07.000Z</creationDate>
+            <updateDate>2016-10-13T15:36:20.000Z</updateDate>
+            <type>2</type>
+            <mandatory>false</mandatory>
+            <readOnly>false</readOnly>
+            <visible>true</visible>
+            <dataType>
+                <localResource exportedWithPermissions="false" xsi:type="dataType">
+                    <folder>/reports/permits2/forms/artp_files/end_date_files</folder>
+                    <name>myDatatype</name>
+                    <version>0</version>
+                    <label>myDatatype</label>
+                    <creationDate>2016-10-13T13:53:07.000Z</creationDate>
+                    <updateDate>2016-10-13T15:36:20.000Z</updateDate>
+                    <type>3</type>
+                    <strictMin>false</strictMin>
+                    <strictMax>false</strictMax>
+                </localResource>
+            </dataType>
+        </localResource>
+    </inputControl>

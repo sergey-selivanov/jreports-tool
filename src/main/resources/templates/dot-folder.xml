@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<folder exportedWithPermissions="false">
+    <parent>/reports</parent>
+    <name>permits2</name>
+    <label>permits2</label>
+    <description></description>
+    <creationDate>2016-10-13T13:53:06.000Z</creationDate>
+    <updateDate>2016-09-21T12:19:40.000Z</updateDate>
+<!--
+    <folder></folder>
+    <resource></resource>
+ -->
+<insertionAnchor>
+ <!--
+    folder and resource elements will be inserted before this element, and then it will be deleted
+-->
+</insertionAnchor>
+</folder>

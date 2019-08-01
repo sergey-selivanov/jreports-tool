@@ -1,0 +1,14 @@
+    <resource>
+        <localResource
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            exportedWithPermissions="false"
+            dataFile="artp_logo.jpg.data" xsi:type="fileResource">
+            <folder>/reports/permits2/forms/artp_files</folder>
+            <name>artp_logo.jpg</name>
+            <version>0</version>
+            <label>artp_logo.jpg</label>
+            <creationDate>2016-10-13T13:53:07.000Z</creationDate>
+            <updateDate>2016-10-13T15:36:20.000Z</updateDate>
+            <fileType>img</fileType>
+        </localResource>
+    </resource>
