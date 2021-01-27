@@ -4,6 +4,26 @@ Command-line tool for JasperReports Server
 
 http://community.jaspersoft.com/project/jasperreports-server/releases
 
+
+# Motivation
+
+
+
+# Usage
+
+The tool can perform following operations:
+- delete resource from JasperReports server
+- process source jrxml report files with referenced images and subreports and generate single zip file ready to import to the server
+- import zip file, generated as above or previously directly exported from server, to JasperReports server
+
+
+
+# Assumptions
+
+one common datasource is generated for all processed reports
+
+# Options
+
 Usage: `jreports-tool [-jsrestapiurl <url>] [-jslogin <login>] [-jspassword <password>]`
 ` [-delete <resource>] [-import <file.zip>] [-prepareimport] [-sourcedir <dirName>] [-tempdir <dirName>]`
 ` [-targetzip <zipFileName>] [-targetresource <resource>] [-dsname <name>] [-dsdriver <className>]`

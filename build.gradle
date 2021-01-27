@@ -1,76 +1,40 @@
-/**
- * To make release and increase version, set stage final:
- *
- * gradle release -Prelease.scope=patch -Prelease.stage=final
- * gradle release -Prelease.scope=minor -Prelease.stage=final
- * gradle release -Prelease.scope=major -Prelease.stage=final
- *
- * The change scope can be either MAJOR, MINOR, or PATCH
- * The stage of the change corresponds to the development stage (such as dev, milestone, rc, final)
- */
+plugins {
+    id 'application'
+    id 'eclipse'
 
-buildscript {
-    repositories {
-/*        maven {
-            url "${artifactory_contextUrl}/libs-release"
-            credentials {
-                username = "${artifactory_user}"
-                password = "${artifactory_password}"
-            }
-        }*/
-        //mavenCentral()
-        jcenter()
-    }
-    dependencies {
-        classpath 'org.ajoberstar:gradle-git:1.7.2'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
-    }
+//    id 'org.beryx.jlink' version '2.23.2' // modular
+    //id 'org.beryx.runtime' version '1.12.1'  // non modular
+
+//    id 'com.github.spotbugs' version '4.6.0'
+    id 'checkstyle'
+
+//    id 'net.saliman.properties' version '1.5.1'
+    id 'com.github.ben-manes.versions' version '0.36.0'
+    id 'org.ajoberstar.reckon' version '0.13.0'
+    id 'org.ajoberstar.grgit' version '4.1.0'
 }
 
-apply plugin: 'application'
-apply plugin: 'eclipse'
-apply plugin: 'checkstyle'
-apply plugin: 'findbugs'
-apply plugin: 'org.ajoberstar.release-opinion'
-apply plugin: 'com.github.ben-manes.versions'
-
-
 import org.apache.tools.ant.filters.ReplaceTokens
-import org.ajoberstar.grgit.*
-import org.ajoberstar.gradle.git.release.opinion.Strategies
 
 mainClassName = 'sssii.jreports.JReportsTool'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-ext.repo = Grgit.open(project.file('.'))
-
-repositories {
-/*    maven {
-        url "${artifactory_contextUrl}/libs-release"
-        credentials {
-            username = "${artifactory_user}"
-            password = "${artifactory_password}"
-        }
-    }*/
-    //mavenCentral()
-    jcenter()
-}
-
-
 dependencies {
 
-    compile 'org.glassfish.jersey.core:jersey-client:2.27'
-    compile 'org.glassfish.jersey.inject:jersey-hk2:2.27'
+//    compile 'org.glassfish.jersey.core:jersey-client:3.0.0'   // namespace changed
+//    compile 'org.glassfish.jersey.inject:jersey-hk2:3.0.0'
+    compile 'org.glassfish.jersey.core:jersey-client:2.33'
+    compile 'org.glassfish.jersey.inject:jersey-hk2:2.33'
 
-    compile 'com.thoughtworks.xstream:xstream:1.4.10'
+    compile 'com.thoughtworks.xstream:xstream:1.4.15'
     compile 'commons-cli:commons-cli:1.4'
 
-    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.11.0'
-    compile 'org.apache.logging.log4j:log4j-core:2.11.0'
+    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.0'
+    compile 'org.apache.logging.log4j:log4j-core:2.14.0'
 
-    testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit:4.13.1'
 }
 
 dependencyUpdates.resolutionStrategy = {
@@ -84,6 +48,15 @@ dependencyUpdates.resolutionStrategy = {
             }
         }
     }
+}
+
+if(!project.hasProperty('reckon.scope')){
+    project.ext.'reckon.scope' = 'patch'    // override default 'minor'
+}
+
+reckon {
+    scopeFromProp()
+    stageFromProp('dev', 'final')
 }
 
 
@@ -103,20 +76,12 @@ def builduser = (val == null ? 'undefined' : val)
 def buildhost = InetAddress.localHost.hostName
 
 
-release {
-    //grgit = Grgit.open(project.file('..'))
-    grgit = repo
-}
-
-tasks.release.dependsOn 'build'
-
-
 processResources{
 
     filter(ReplaceTokens,
         tokens:[
-            'git.commit': repo.head().abbreviatedId,
-            'git.date': repo.head().date.toString(),
+            'git.commit': grgit.head().abbreviatedId,
+            'git.date': grgit.head().date.toString(),
             'build.date': new java.util.Date().toString(),
             'version': project.version.toString(),
             'hudson.build.number': bn,
@@ -131,44 +96,14 @@ checkstyle {
     ignoreFailures = true
     sourceSets = [ project.sourceSets.main ]
 }
-
+/*
 findbugs {
     ignoreFailures = true
     sourceSets = [ project.sourceSets.main ]
     excludeFilter = file("$projectDir/config/findbugs/excludeFilter.xml")
 }
-
+*/
 test {
     // do not perform unit tests
     exclude 'sssii/jreports/**'
 }
-
-/*
-task copyConfigs(type: Copy) {
-
-    from(sourceSets.main.resources){
-        include 'options.properties'
-    }
-
-    into("$buildDir/config")
-}
-
-applicationDistribution.from(copyConfigs) {
-    into "config"
-}
-*/
-
-/*
-startScripts {
-    //classpath += files('config')    // appends
-    classpath = files('config').plus(classpath)
-
-    // http://forums.gradle.org/gradle/topics/classpath_in_application_plugin_is_bilding_always_relative_to_app_home_lib_directory
-    doLast {
-        def windowsScriptFile = file getWindowsScript()
-        def unixScriptFile    = file getUnixScript()
-        windowsScriptFile.text = windowsScriptFile.text.replace('%APP_HOME%\\lib\\config', '%APP_HOME%\\config')
-        unixScriptFile.text    = unixScriptFile.text.replace('$APP_HOME/lib/config', '$APP_HOME/config')
-    }
-}
-*/
