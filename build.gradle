@@ -14,6 +14,10 @@ plugins {
     id 'org.ajoberstar.grgit' version '4.1.0'
 }
 
+repositories {
+    jcenter()
+}
+
 import org.apache.tools.ant.filters.ReplaceTokens
 
 mainClassName = 'sssii.jreports.JReportsTool'
